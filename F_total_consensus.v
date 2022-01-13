@@ -25,17 +25,6 @@ Require Import necessity.
 Notation D:= definitions.D.
 Notation F:= definitions.F.
 
-(*
-Lemma strong_sufficiency:
-forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R),
-nonempty_nontrivial_graph ->
-(0 < F+1 <= #|D|)%N ->
-wts_well_behaved_general A mal init ->
-r_s_robustness (F + 1) (F + 1) ->
-Resilient_asymptotic_consensus_general A mal init.
-Proof.
-Admitted.
-*)
 
 Lemma weak_sufficiency:
 (forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R),
