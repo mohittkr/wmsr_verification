@@ -24,18 +24,78 @@ Require Import lemma_1.
 Notation D:= definitions.D.
 Notation F:= definitions.F.
 
+Open Scope classical_set_scope.
 
-Axiom P_not_not_P: forall (P:Prop), P <->  ~(~ P).
+(** we have to introduce a propositional completeness lemms
+    to reason classically **)
+Axiom prop_degeneracy : 
+  forall A:Prop, A = True \/ A = False.
 
-Axiom excluded_middle:
+Lemma P_not_not_P: 
+  forall (P:Prop), P <->  ~(~ P).
+Proof.
+intros. split.
++ intros. 
+  assert ( P = True \/ P = False).
+  { by apply prop_degeneracy. }
+  destruct H0.
+  - by rewrite H0.
+  - by [].
++ intros.
+  assert ( P = True \/ P = False).
+  { by apply prop_degeneracy. }
+  destruct H0.
+  - by rewrite H0.
+  - contradict H. by rewrite H0.
+Qed. 
+
+Lemma excluded_middle:
   forall A :Prop, A \/ ~A.
+Proof.
+intros.
+assert (A = True \/ A = False).
+{ by apply prop_degeneracy. } destruct H.
++ rewrite H. by left.
++ rewrite H. by right.
+Qed.
 
-Axiom de_morgan_and:
+Lemma de_morgan_and:
   forall A B:Prop, ~(A /\ B) -> ~A \/ ~B.
+Proof.
+intros.
+assert (A = True \/ A = False). { by apply prop_degeneracy. }
+destruct H0.
++ rewrite H0. rewrite H0 //= in H.
+  right. 
+  assert (B = True \/ B = False). { by apply prop_degeneracy. }
+  destruct H1. 
+  - rewrite H1 in H. by contradict H. 
+  - by rewrite H1.
++ rewrite H0. by left.
+Qed.
 
 
-Axiom de_morgan_or:
+
+Lemma de_morgan_or:
   forall A B:Prop, ~(A \/ B) -> ~A /\ ~B.
+Proof.
+intros.
+assert (A = True \/ A = False). { by apply prop_degeneracy. }
+destruct H0.
++ rewrite H0 in H. 
+  assert (B = True \/ B = False). { by apply prop_degeneracy. }
+  destruct H1. 
+  - rewrite H1 in H. contradict H. by left.
+  - rewrite H1 in H. contradict H. by left.
++ rewrite H0. split.
+  - by [].
+  - rewrite H0 in H.
+    assert (B = True \/ B = False). { by apply prop_degeneracy. }
+    destruct H1.
+    * rewrite H1 in H. contradict H. by right.
+    * by rewrite H1.
+Qed.
+
 
 Lemma nandb_triple:
   forall (a b c:bool), ~~(a || b || c) <-> ~~a && ~~b && ~~c.
