@@ -18,28 +18,26 @@ Set Implicit Arguments.
 Unset Strict Implicit.
 Unset Printing Implicit Defensive.
 
-Require Import lemma_1.
 Require Import sufficiency.
 Require Import necessity.
 
 Notation D:= definitions.D.
 Notation F:= definitions.F.
 
-
-Lemma weak_sufficiency:
-(forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R),
+Lemma strong_to_weak_sufficiency:
+(forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R),
 nonempty_nontrivial_graph ->
 (0 < F+1 <= #|D|)%N ->
-wts_well_behaved_general A mal init ->
+wts_well_behaved A mal init w ->
 r_s_robustness (F + 1) (F + 1) ->
-Resilient_asymptotic_consensus_general A mal init) ->
+Resilient_asymptotic_consensus A mal init w) ->
 nonempty_nontrivial_graph ->
 (0 < F+1 <= #|D|)%N ->
-((forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R), 
-wts_well_behaved_general A mal init) ->
-((forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R),
+((forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R), 
+wts_well_behaved A mal init w) ->
+((forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R),
 r_s_robustness (F + 1) (F + 1) ->
-Resilient_asymptotic_consensus_general A mal init))).
+Resilient_asymptotic_consensus A mal init w))).
 Proof.
 intros.
 by apply H.
@@ -48,29 +46,30 @@ Qed.
 Theorem F_total_consensus:
 nonempty_nontrivial_graph ->
 (0 < F+1 <= #|D|)%N -> 
-(forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R),
-wts_well_behaved_general A mal init) ->
-((forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R),
-Resilient_asymptotic_consensus_general A mal init) <->
+(forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R),
+wts_well_behaved A mal init w) ->
+((forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R),
+Resilient_asymptotic_consensus A mal init w) <->
 r_s_robustness (F + 1) (F + 1)).
 Proof.
 intros. split.
 + rewrite -contrapositive.
-  - assert(((forall (A : D -> bool) (mal : nat -> D -> R) (init : D -> R),
-    Resilient_asymptotic_consensus_general A mal init) -> False) =
-    ~ (forall (A : D -> bool) (mal : nat -> D -> R) (init : D -> R),
-    Resilient_asymptotic_consensus_general A mal init)).
+  - assert(((forall (A : D -> bool) (mal : nat -> D -> R) (init : D -> R) (w:nat -> D*D -> R),
+    Resilient_asymptotic_consensus A mal init w) -> False) =
+    ~ (forall (A : D -> bool) (mal : nat -> D -> R) (init : D -> R) (w:nat -> D*D -> R),
+    Resilient_asymptotic_consensus A mal init w)).
     {by unfold not. }
     assert((r_s_robustness (F + 1) (F + 1) -> False) =
     ~ r_s_robustness (F + 1) (F + 1)).
     {by unfold not. }
     rewrite H2 H3. intros. by apply necessity_proof.
   - apply excluded_middle.
-+ intros. apply weak_sufficiency.
-  - apply sufficiency_proof.
++ intros. apply strong_to_weak_sufficiency.
+  - apply strong_sufficiency.
   - by [].
   - by [].
   - by [].
   - by [].
 Qed.
+
 
