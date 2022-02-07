@@ -19,9 +19,9 @@ All the developments have been done in Coq 8.12.0. To successfully compile the c
 
 To build and install do:
 ```
-git clone https://github.com/mohittkr/iterative_convergence.git
-cd iterative_convergence
+git clone https://github.com/mohittkr/wmsr_verification.git
+cd wmsr_verification
 make
 make install
 ```
-All the files are installed in the `user-contrib/iterative_convergence` folder 
+All the files are installed in the `user-contrib/wmsr_verification` folder 
