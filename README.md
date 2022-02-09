@@ -13,6 +13,7 @@ All the developments have been done in Coq 8.12.0. To successfully compile the c
 - `mathcomp 1.12.0 or later` 
 - `mathcomp-analysis 0.3.7`
 - `coquelicot 3.2.0`
+- `coq-graph-theory 0.8`
 
 
 # Building and installing instructions
