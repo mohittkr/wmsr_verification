@@ -27,11 +27,11 @@ Notation F:= definitions.F.
 
 Lemma strong_to_weak_sufficiency:
 (forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R),
-nonempty_nontrivial_graph ->
-(0 < F+1 <= #|D|)%N ->
-wts_well_behaved A mal init w ->
-r_s_robustness (F + 1) (F + 1) ->
-Resilient_asymptotic_consensus A mal init w) ->
+  nonempty_nontrivial_graph ->
+  (0 < F+1 <= #|D|)%N ->
+  wts_well_behaved A mal init w ->
+  r_s_robustness (F + 1) (F + 1) ->
+  Resilient_asymptotic_consensus A mal init w) ->
 nonempty_nontrivial_graph ->
 (0 < F+1 <= #|D|)%N ->
 (r_s_robustness (F+1) (F+1) ->
@@ -65,9 +65,9 @@ Theorem F_total_consensus:
 nonempty_nontrivial_graph ->
 (0 < F+1 <= #|D|)%N -> 
 (forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R),
-wts_well_behaved A mal init w ->
-Resilient_asymptotic_consensus A mal init w)
-<-> r_s_robustness (F + 1) (F + 1).
+  wts_well_behaved A mal init w ->
+  Resilient_asymptotic_consensus A mal init w) <-> 
+r_s_robustness (F + 1) (F + 1).
 Proof.
 intros. split.
 + rewrite -contrapositive.
