@@ -157,10 +157,10 @@ in the top F of the inclusive_neighbor_list **)
 Definition R_i_greater_than
 (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R) (i:D) (t:nat) :=
 [set j | Rgt_dec ((x mal init A w t) j)
-((x mal init A w t) i) &&
-(index j (inclusive_neighbor_list i (x mal init A w t)) >
-((size (inclusive_neighbor_list i (x mal init A w t))) - F - 1))%N &&
-(j \in (inclusive_neighbor_list i (x mal init A w t)))].
+  ((x mal init A w t) i) &&
+  (index j (inclusive_neighbor_list i (x mal init A w t)) >
+    ((size (inclusive_neighbor_list i (x mal init A w t))) - F - 1))%N &&
+    (j \in (inclusive_neighbor_list i (x mal init A w t)))].
 
 (** Defines the set of nodes, greater than
  x mal init A w t i, with values
@@ -169,9 +169,9 @@ inclusive_neighbor_list **)
 Definition R_i_greater_than_maybe_not_neighbors
 (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R) (i:D) (t:nat) :=
 [set j | Rgt_dec ((x mal init A w t) j)
-((x mal init A w t) i) &&
-(index j (inclusive_neighbor_list i (x mal init A w t)) >
-((size (inclusive_neighbor_list i (x mal init A w t))) - F - 1))%N].
+  ((x mal init A w t) i) &&
+  (index j (inclusive_neighbor_list i (x mal init A w t)) >
+    ((size (inclusive_neighbor_list i (x mal init A w t))) - F - 1))%N].
 
 (** Defines the set of nodes, less than
  x mal init A w t i, with values
@@ -180,8 +180,8 @@ inclusive_neighbor_list **)
 Definition R_i_less_than_maybe_not_neighbors
 (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R) (i:D) (t:nat) :=
 [set j | (Rlt_dec ((x mal init A w t) j)
-((x mal init A w t) i)) &&
-(index j (inclusive_neighbor_list i (x mal init A w t)) < F)%N].
+  ((x mal init A w t) i)) &&
+  (index j (inclusive_neighbor_list i (x mal init A w t)) < F)%N].
 
 (** Defines the set of nodes, less than
  x mal init A w t i, with values
@@ -189,17 +189,20 @@ in the bottom F of the inclusive_neighbor_list **)
 Definition R_i_less_than
 (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R) (i:D) (t:nat) :=
 [set j | (Rlt_dec ((x mal init A w t) j)
-((x mal init A w t) i)) &&
-(index j (inclusive_neighbor_list i (x mal init A w t)) < F)%N &&
-(j \in (inclusive_neighbor_list i (x mal init A w t)))].
+  ((x mal init A w t) i)) &&
+  (index j (inclusive_neighbor_list i (x mal init A w t)) < F)%N &&
+    (j \in (inclusive_neighbor_list i (x mal init A w t)))].
 
 (** Defines condition for a node to have malicious behavior at a 
 given time **)
 Definition malicious_at_i_t
-(mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R) (i:D) (t:nat): bool :=
-(x mal init A w (t+1) i) != sum_f_R0 (fun n:nat =>
-let j := (nth i (incl_neigh_minus_extremes i (x mal init A w t)) n) in
-((x mal init A w t j) * (w t (i,j)))%Re) ((size (incl_neigh_minus_extremes i (x mal init A w t)))-1).
+(mal:nat -> D -> R) (init:D -> R) (A:D -> bool) 
+(w:nat -> D*D -> R) (i:D) (t:nat): bool :=
+(x mal init A w (t+1) i) != 
+sum_f_R0 (fun n:nat =>
+            let j := (nth i (incl_neigh_minus_extremes i (x mal init A w t)) n) in
+            ((x mal init A w t j) * (w t (i,j)))%Re)
+     ((size (incl_neigh_minus_extremes i (x mal init A w t)))-1).
 
 (** Define maliciousness **)
 Definition malicious
@@ -207,16 +210,18 @@ Definition malicious
 exists t:nat, malicious_at_i_t mal init A w i t.
 
 (** defines condition for weights given in W-MSR at time t **)
-Definition wts_well_behaved (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R) := 
-exists a:R, (0<a)%Re /\ (a <1)%Re /\
+Definition wts_well_behaved 
+(A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R) := 
+exists a:R, 
+(0<a)%Re /\ (a <1)%Re /\
 (forall (t:nat) (i:D),
-let incl := (incl_neigh_minus_extremes i (x mal init A w t)) in
-(forall j:D, j \notin incl -> (w t (i,j) = 0)%Re) /\
-(forall j:D, j \in incl ->(a <= w t (i,j)))%Re /\
-sum_f_R0 (fun n:nat => let j := (nth i incl n) in
-(w t (i,j))%Re) ((size incl)-1) = 1%Re).
+  let incl := (incl_neigh_minus_extremes i (x mal init A w t)) in
+    (forall j:D, j \notin incl -> (w t (i,j) = 0)%Re) /\
+    (forall j:D, j \in incl ->(a <= w t (i,j)))%Re /\
+    sum_f_R0 (fun n:nat => let j := (nth i incl n) in
+                           (w t (i,j))%Re) ((size incl)-1) = 1%Re).
 
-(** Define an F_total set S **)
+(** Define an F_total set S **) 
 Definition F_total (S: {set D}) :=
   S \proper Vertex /\ (#|S| <= F)%N.
 
@@ -239,20 +244,24 @@ Definition M (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R)
   bigmaxr 0 (map (x mal init A w t) (enum (Normal A))).
 
 (** defines resilient asymptotic consensus **)
-Definition Resilient_asymptotic_consensus (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R):=
-(F_total_malicious mal init A w) -> (exists L:Rbar,
-forall (i:D), i \in (Normal A) ->
-is_lim_seq (fun t: nat => x mal init A w t i) L) /\ 
+Definition Resilient_asymptotic_consensus 
+(A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R):=
+(F_total_malicious mal init A w) -> 
+(exists L:Rbar,
+  forall (i:D), i \in (Normal A) ->
+  is_lim_seq (fun t: nat => x mal init A w t i) L) /\ 
 (forall t:nat,  (m mal init A w 0 <= m mal init A w t)%Re /\
-(M mal init A w t <= M mal init A w 0)%Re).
+                (M mal init A w t <= M mal init A w 0)%Re).
 
-	(** we have to introduce a propositional completeness lemms	
+(** we have to introduce a propositional completeness lemms	
     to reason classically. This is consistent with	
     the definition of prop_degeneracy from the Coq classical	
     facts library.	
- **)	
+**)	
 Axiom proposition_degeneracy : 	
   forall A:Prop, A = True \/ A = False.	
+
+
 Lemma P_not_not_P: 	
   forall (P:Prop), P <->  ~(~ P).	
 Proof.	
