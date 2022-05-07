@@ -236,9 +236,9 @@ forall (l:seq D), uniq l ->
 forall (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R) (t:nat),
 sorted (sorted_Dseq_rel (x mal init A w t)) l <->
 (forall (a b:D),
-a \in l -> b \in l ->
-(index a l < index b l)%N ->
-(sorted_Dseq_rel (x mal init A w t) a b)).
+  a \in l -> b \in l ->
+  (index a l < index b l)%N ->
+  (sorted_Dseq_rel (x mal init A w t) a b)).
 Proof.
 intros l G.
 split.
@@ -567,9 +567,9 @@ Lemma sorted_Dseq_compat_sorted_Dseq_rel:
 forall (l:seq D), uniq l ->
 forall (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R) (t:nat),
 (forall (a b:D),
-a \in l -> b \in l ->
-(index a l < index b l)%N ->
-(sorted_Dseq_rel (x mal init A w t) a b)) ->
+  a \in l -> b \in l ->
+  (index a l < index b l)%N ->
+  (sorted_Dseq_rel (x mal init A w t) a b)) ->
 sorted_Dseq (x mal init A w t) l.
 Proof.
 intros. unfold sorted_Dseq. intros. specialize (H0 a b). apply H0 in H1.
@@ -616,7 +616,7 @@ forall (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R) (t:na
 a \in (incl_neigh_minus_extremes i (x mal init A w t)) ->
 b \in (incl_neigh_minus_extremes i (x mal init A w t)) ->
 (index a (incl_neigh_minus_extremes i (x mal init A w t)) <
-index b (incl_neigh_minus_extremes i (x mal init A w t)))%N ->
+  index b (incl_neigh_minus_extremes i (x mal init A w t)))%N ->
 (x mal init A w t a <= x mal init A w t b)%Re.
 Proof.
 intros mal init A w t i.
@@ -636,7 +636,7 @@ apply sorted_filter.
 Qed.
 
 Lemma incl_subseq_inclusive_neighbors:
-  forall (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R) (t:nat) (i:D),
+forall (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R) (t:nat) (i:D),
 subseq (incl_neigh_minus_extremes i (x mal init A w t))
 (inclusive_neighbor_list i (x mal init A w t)).
 Proof.
@@ -665,8 +665,8 @@ Lemma incl_set_version:
   forall (i:D) (t:nat) (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R),
   (incl_neigh_minus_extremes i (x mal init A w t)) =
   filter (fun (j:D) =>
-  (j \notin (R_i_less_than_maybe_not_neighbors mal init A w i t)) &&
-  (j \notin (R_i_greater_than_maybe_not_neighbors mal init A w i t)))
+          (j \notin (R_i_less_than_maybe_not_neighbors mal init A w i t)) &&
+          (j \notin (R_i_greater_than_maybe_not_neighbors mal init A w i t)))
   (inclusive_neighbor_list i (x mal init A w t)).
 Proof.
 intros. unfold incl_neigh_minus_extremes.
@@ -1123,8 +1123,8 @@ Qed.
 Lemma last_incl_is_max:
   forall (i k:D) (t:nat) (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R),
   let incl := (incl_neigh_minus_extremes i (x mal init A w t)) in
-  k \in incl -> (x mal init A w t k <= x mal init A w t
-  (last (head i incl) (behead incl)))%Re.
+  k \in incl -> 
+  (x mal init A w t k <= x mal init A w t (last (head i incl) (behead incl)))%Re.
 Proof.
 intros.
 assert(k == last (head i incl) (behead incl) \/
@@ -1169,7 +1169,8 @@ Qed.
 Lemma first_incl_is_min:
   forall (i k:D) (t:nat) (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R),
   let incl := (incl_neigh_minus_extremes i (x mal init A w t)) in
-  k \in incl -> (x mal init A w t (nth i incl 0) <= x mal init A w t k)%Re.
+  k \in incl -> 
+  (x mal init A w t (nth i incl 0) <= x mal init A w t k)%Re.
 Proof.
 intros.
 destruct (k == (nth i incl 0)) eqn:E.
@@ -1275,8 +1276,9 @@ forall (i:D) (t:nat) (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D
 F_total_malicious mal init A w ->
 R_i_greater_than mal init A w i t != Adversary A ->
 #|R_i_greater_than mal init A w i t| == F ->
-(exists (j:D), (j \in (Normal A) /\
-j \in R_i_greater_than mal init A w i t)).
+(exists (j:D), 
+  (j \in (Normal A) /\
+  j \in R_i_greater_than mal init A w i t)).
 Proof.
 intros. destruct H. destruct H.
 assert((exists (j:D), j \in ((Normal A) :&: (R_i_greater_than mal init A w i t))) ->
@@ -1312,8 +1314,9 @@ forall (i:D) (t:nat) (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D
 F_total_malicious mal init A w ->
 R_i_less_than mal init A w i t != Adversary A ->
 #|R_i_less_than mal init A w i t| == F ->
-(exists (j:D), (j \in Normal A /\
-j \in R_i_less_than mal init A w i t)).
+(exists (j:D), 
+  (j \in Normal A /\
+  j \in R_i_less_than mal init A w i t)).
 Proof.
 intros. destruct H. destruct H.
 assert((exists (j:D), j \in (Normal A :&: (R_i_less_than mal init A w i t))) ->
@@ -1626,7 +1629,8 @@ Qed.
 
 Lemma in_normal_subset:
 forall (i:D) (l : seq D) (A:D -> bool),
-l != [::] ->  (forall (a:D), a \in l -> a \in (enum (Normal A))) ->
+l != [::] ->  
+(forall (a:D), a \in l -> a \in (enum (Normal A))) ->
 last (head i l) (behead l) \in Normal A.
 Proof.
 intros.
@@ -1640,7 +1644,8 @@ Qed.
 
 Lemma in_normal_subset_0:
 forall (i:D) (l : seq D) (A : D -> bool),
-l != [::] -> (forall (a:D), a \in l -> a \in enum (Normal A)) ->
+l != [::] -> 
+(forall (a:D), a \in l -> a \in enum (Normal A)) ->
 nth i l 0 \in (Normal A).
 Proof.
 intros. rewrite -mem_enum. apply H0. rewrite mem_nth.
@@ -1736,9 +1741,11 @@ forall (i:D) (t:nat) (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D
 F_total_malicious mal init A w ->
 wts_well_behaved A mal init w ->
 i \in Normal A ->
-(exists (j2:D), j2 \in (inclusive_neighbor_list i (x mal init A w t)) /\ j2 \in Normal A /\
-forall (k:D), k \in (incl_neigh_minus_extremes i (x mal init A w t)) ->
-((x mal init A w t k) <= (x mal init A w t j2))%Re).
+(exists (j2:D), 
+  j2 \in (inclusive_neighbor_list i (x mal init A w t)) /\ 
+  j2 \in Normal A /\
+  forall (k:D), k \in (incl_neigh_minus_extremes i (x mal init A w t)) ->
+                ((x mal init A w t k) <= (x mal init A w t j2))%Re).
 Proof.
 intros.
 remember (incl_neigh_minus_extremes i (x mal init A w t)) as incl.
@@ -1818,9 +1825,11 @@ forall (i:D) (t:nat) (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D
 F_total_malicious mal init A w ->
 wts_well_behaved A mal init w ->
 i \in Normal A ->
-(exists (j1:D), j1 \in (inclusive_neighbor_list i (x mal init A w t)) /\ j1 \in Normal A /\
-forall (k:D), k \in (incl_neigh_minus_extremes i (x mal init A w t)) ->
-((x mal init A w t j1) <= (x mal init A w t k))%Re).
+(exists (j1:D), 
+  j1 \in (inclusive_neighbor_list i (x mal init A w t)) /\ 
+  j1 \in Normal A /\
+  forall (k:D), k \in (incl_neigh_minus_extremes i (x mal init A w t)) ->
+                ((x mal init A w t j1) <= (x mal init A w t k))%Re).
 Proof.
 intros.
 remember (incl_neigh_minus_extremes i (x mal init A w t)) as incl.
@@ -1899,10 +1908,11 @@ Qed.
 Theorem w_coeff_sum_to_1_implies_sum_eq_orig:
   forall (i:D) (t:nat) (r:R) (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (w:nat -> D*D -> R),
   sum_f_R0 (fun n : nat =>
-  w t (i, nth i (incl_neigh_minus_extremes i (x mal init A w t)) n))
-  (size (incl_neigh_minus_extremes i (x mal init A w t)) - 1) = 1 -> (sum_f_R0 (fun n:nat =>
-  ((w t (i,(nth i (incl_neigh_minus_extremes i (x mal init A w t)) n))) * r)%Re)
-  ((size (incl_neigh_minus_extremes i (x mal init A w t)))-1) = r).
+            w t (i, nth i (incl_neigh_minus_extremes i (x mal init A w t)) n))
+            (size (incl_neigh_minus_extremes i (x mal init A w t)) - 1) = 1 -> 
+  (sum_f_R0 (fun n:nat =>
+            ((w t (i,(nth i (incl_neigh_minus_extremes i (x mal init A w t)) n))) * r)%Re)
+            ((size (incl_neigh_minus_extremes i (x mal init A w t)))-1) = r).
 Proof.
 intros. by rewrite -scal_sum H Rmult_1_r.
 Qed.
@@ -1913,7 +1923,7 @@ F_total_malicious mal init A w ->
 wts_well_behaved A mal init w ->
 i \in Normal A ->
 ((x mal init A w (t+1) i <= M mal init A w t)%Re /\
-(m mal init A w t <= x mal init A w (t+1) i)%Re).
+  (m mal init A w t <= x mal init A w (t+1) i)%Re).
 Proof.
 intros.
 assert(A i = false).
