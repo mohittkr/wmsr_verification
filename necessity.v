@@ -24,7 +24,6 @@ Require Import lemma_1.
 Notation D:= definitions.D.
 Notation F:= definitions.F.
 
-(**Definition D_pair_type := D*D.**)
 
 Lemma excluded_middle:
   forall A :Prop, A \/ ~A.
@@ -373,7 +372,8 @@ Qed.
 Lemma temp_name_1:
   (0 < F + 1 <= #|D|)%N ->
   ~ r_s_robustness (F + 1) (F + 1) ->
-  exists (S1 S2: {set D}), (S1 \proper Vertex) /\ (0 < #|S1|)%N ->
+  exists (S1 S2: {set D}), 
+  (S1 \proper Vertex) /\ (0 < #|S1|)%N ->
   (S2 \proper Vertex) /\ (0 < #|S2|)%N -> [disjoint S1 & S2] ->
   (#|Xi_S_r S1 (F + 1)| != #|S1|) && 
   (#|Xi_S_r S2 (F + 1)| != #|S2|) &&
@@ -596,17 +596,24 @@ Qed.
 
 Lemma lim_is_0_or_1:
 forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R) (j:D) (L:Rbar),
-F_total_malicious mal init A w /\ (0 < F + 1 <= #|D|)%N /\
+F_total_malicious mal init A w /\ 
+(0 < F + 1 <= #|D|)%N /\
 wts_well_behaved A mal init w /\
-(exists S1 S2 : {set D}, S1 \proper Vertex /\ (0 < #|S1|)%N /\
-S2 \proper Vertex /\ (0 < #|S2|)%N /\ [disjoint S1 & S2] /\
-(#|Xi_S_r S1 (F + 1)| != #|S1|) /\ (#|Xi_S_r S2 (F + 1)| != #|S2|) /\
-(F + 1 > #|Xi_S_r S1 (F + 1)| + #|Xi_S_r S2 (F + 1)|)%N /\
-A = (fun (i:D) => i \in (Xi_S_r S1 (F + 1) :|: Xi_S_r S2 (F + 1))) /\
-mal = (fun (t:nat) => (fun (j:D) => if j \in S1 then 0 else 1))%Re /\
-init = (fun j : D => if j \in S1 then 0 else if j \notin S2 then (1 / 2)%Re else 1)%Re /\
-j \in S1 /\ Adversary A = Xi_S_r S1 (F + 1) :|: Xi_S_r S2 (F + 1) /\
-j \in Normal A) ->
+(exists S1 S2 : {set D}, 
+  S1 \proper Vertex /\ 
+  (0 < #|S1|)%N /\
+  S2 \proper Vertex /\ 
+  (0 < #|S2|)%N /\ 
+  [disjoint S1 & S2] /\
+  (#|Xi_S_r S1 (F + 1)| != #|S1|) /\ 
+  (#|Xi_S_r S2 (F + 1)| != #|S2|) /\
+  (F + 1 > #|Xi_S_r S1 (F + 1)| + #|Xi_S_r S2 (F + 1)|)%N /\
+  A = (fun (i:D) => i \in (Xi_S_r S1 (F + 1) :|: Xi_S_r S2 (F + 1))) /\
+  mal = (fun (t:nat) => (fun (j:D) => if j \in S1 then 0 else 1))%Re /\
+  init = (fun j : D => if j \in S1 then 0 else if j \notin S2 then (1 / 2)%Re else 1)%Re /\
+  j \in S1 /\ 
+  Adversary A = Xi_S_r S1 (F + 1) :|: Xi_S_r S2 (F + 1) /\
+  j \in Normal A) ->
 ((is_lim_seq ((x mal init A w)^~ j) L) <-> L = 0)%Re.
 Proof.
 intros.
@@ -955,9 +962,9 @@ Qed.
 Lemma wts_gt_0:
 forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R),
 wts_well_behaved A mal init w ->
-forall (i j:D) (t:nat), j \in
-(incl_neigh_minus_extremes i (x mal init A w t)) ->
-(0 < w t (i,j))%Re.
+forall (i j:D) (t:nat), 
+  j \in (incl_neigh_minus_extremes i (x mal init A w t)) ->
+  (0 < w t (i,j))%Re.
 Proof.
 intros.
 destruct H. destruct H. destruct H1.
@@ -1239,13 +1246,6 @@ Qed.
 Definition x_aux (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (t:nat) (i:D) :=
 (x_w mal init A (2*t)%N t).1 i.
 
-(**
-Definition x_aux_help (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (two_t:nat) (i:D) :=
-(x_w mal init A (two_t)%N (two_t %/ 2)%N).1 (two_t %/ 2)%N i.
-
-Definition x_aux (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (t:nat) (i:D) :=
-x_aux_help mal init A (2*t) i.
-**)
 
 Lemma x_aux_trivial:
 forall (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (t:nat) (i:D),
@@ -1257,13 +1257,6 @@ Qed.
 Definition w_aux (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (t:nat) (i_j:D*D) :=
 (x_w mal init A (2*t)%N t).2 i_j.
 
-(**
-Definition w_aux_help (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (two_t:nat) (i_j:D*D) :=
-(x_w mal init A (two_t)%N (two_t %/ 2)%N).2 (two_t %/ 2)%N i_j.
-
-Definition w_aux (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (t:nat) (i_j:D*D) :=
-w_aux_help mal init A (2*t) i_j.
-**)
 
 Lemma w_aux_trivial:
 forall (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (t:nat) (i_j:D*D),
@@ -1366,10 +1359,10 @@ Qed.
 Lemma wts_equiv_one_over_size_incl:
 forall (mal:nat -> D -> R) (init:D -> R) (A:D -> bool) (t n:nat) (i:D),
 (n < (size (incl_neigh_minus_extremes i (x mal init A
-(fun t : nat => [eta (x_w mal init A (2 * t) t).2]) t))))%N ->
+            (fun t : nat => [eta (x_w mal init A (2 * t) t).2]) t))))%N ->
 (x_w mal init A (2 * t) t).2 (i, nth i (incl_neigh_minus_extremes i
-(x mal init A
-(fun t : nat => [eta (x_w mal init A (2 * t) t).2]) t)) n) =
+    (x mal init A
+    (fun t : nat => [eta (x_w mal init A (2 * t) t).2]) t)) n) =
 (/ INR (size (incl_neigh_minus_extremes i (x mal init A
 (fun t : nat => [eta (x_w mal init A (2 * t) t).2]) t))))%Re.
 Proof.
@@ -1475,11 +1468,10 @@ Qed.
 
 Lemma necessity_proof:
 nonempty_nontrivial_graph ->
-(**(0 < F + 1 <= #|D|)%N -> **)
 (~ r_s_robustness (F + 1) (F + 1) ->
-~ (forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R),
-wts_well_behaved A mal init w ->
-Resilient_asymptotic_consensus A mal init w)).
+ ~ (forall (A:D -> bool) (mal:nat -> D -> R) (init:D -> R) (w:nat -> D*D -> R),
+      wts_well_behaved A mal init w ->
+      Resilient_asymptotic_consensus A mal init w)).
 Proof.
 intro G. intros. unfold r_s_robustness in H.
 unfold Resilient_asymptotic_consensus. apply nand_temp in H.
