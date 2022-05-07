@@ -2449,7 +2449,6 @@ Lemma x_left_ineq_2 (i:D) (a A_m:R) (t_eps j:nat) (eps eps_0: posreal)
   (mal : nat -> D -> R) (init : D -> R) (A : D -> bool) (w: nat -> D * D -> R):
   F_total_malicious mal init A w ->
    i \in Normal A -> (0 < a)%Re -> (a < 1)%Re ->
-  (*(x (t_eps + j)%N i >= A_m + eps_j j eps_0 eps a)%Re -> *)
   let incl :=  incl_neigh_minus_extremes i (x mal init A w (t_eps + j)%N) in
   (forall k:D, k \in incl -> (a <= w (t_eps + j)%N  (i, k))%Re) ->
   (\sum_(i0 < (size incl - 1).+1 | (i0 != (@inord  (size incl - 1) (index i incl))) &&
@@ -3507,7 +3506,7 @@ Lemma X_M_size_decreases_from_0_1
    is_lim_seq [eta M mal init A w] A_M ->
    (0 < a)%Re -> (a < 1)%Re ->
    (eps < a ^ #|Normal A| / (1 - a ^ #|Normal A|) * eps_0)%Re ->
-  (forall i:D, (*i \in Normal ->  *)
+  (forall i:D, 
      (forall k : D,
           k \in incl_neigh_minus_extremes i (x mal init A w (t_eps + 0)) ->
           (a <= w (t_eps + 0)%N (i, k))%Re) /\
@@ -3561,8 +3560,8 @@ split.
            + by [].
            + by [].
            + by [].
-           + specialize (H6 i). (*specialize (H6 i H11). *) by destruct H6.
-           + specialize (H6 i). (*specialize (H6 i H11). *) by destruct H6.
+           + specialize (H6 i). by destruct H6.
+           + specialize (H6 i). by destruct H6.
            + by [].
            + by rewrite addn0 /eps_j.
          }
@@ -3593,8 +3592,8 @@ split.
            + by [].
            + by [].
            + by [].
-           + destruct H9. specialize (H6 i). (*specialize (H6 i H9).*) by destruct H6.
-           + destruct H9. specialize (H6 i). (*specialize (H6 i H9). *) by destruct H6.
+           + destruct H9. specialize (H6 i).  by destruct H6.
+           + destruct H9. specialize (H6 i).  by destruct H6.
            + by [].
            + by destruct H9.
            + by rewrite addn0 /eps_j.
@@ -3613,7 +3612,7 @@ Lemma X_m_size_decreases_from_0_1
    is_lim_seq [eta m mal init A w] A_m ->
    (0 < a)%Re -> (a < 1)%Re ->
    (eps < a ^ #|Normal A| / (1 - a ^ #|Normal A|) * eps_0)%Re ->
-  (forall i:D, (*i \in Normal -> *) 
+  (forall i:D,  
      (forall k : D,
           k \in incl_neigh_minus_extremes i (x mal init A w (t_eps + 0)) ->
           (a <= w (t_eps + 0)%N (i, k))%Re) /\
@@ -3667,8 +3666,8 @@ split.
            + by [].
            + by [].
            + by [].
-           + specialize (H6 i). (*specialize (H6 i H11). *) by destruct H6.
-           + specialize (H6 i). (*specialize (H6 i H11). *) by destruct H6.
+           + specialize (H6 i). by destruct H6.
+           + specialize (H6 i).  by destruct H6.
            + by [].
            + by rewrite addn0 /eps_j.
          }
@@ -3699,8 +3698,8 @@ split.
            + by [].
            + by [].
            + by [].
-           + destruct H9. specialize (H6 i). (* specialize (H6 i H9). *) by destruct H6.
-           + destruct H9. specialize (H6 i). (*specialize (H6 i H9). *) by destruct H6.
+           + destruct H9. specialize (H6 i).  by destruct H6.
+           + destruct H9. specialize (H6 i).  by destruct H6.
            + by [].
            + by destruct H9.
            + by rewrite addn0 /eps_j.
@@ -3905,10 +3904,10 @@ apply (@add_max_bound (#|Xi_S_r (X_M_t_e_i eps_0 A_M t_eps mal init A w) (F + 1)
                 #|in_neighbor i :\: X_M_t_e_i eps_0 A_M t_eps mal init A w|)%N).
     { by apply /andP. } destruct H8 as [H8 H9].
     split.
-    * by []. (*rewrite in_setU. apply /orP. left. apply H8. *)
+    * by [].
     * split.
       ++ apply H7.
-      ++ (*left. *) apply H9.
+      ++  apply H9.
   - right. rewrite inE in H5.
     assert ((i \in Xi_S_r (X_m_t_e_i eps_0 A_m t_eps mal init A w)
               (F + 1)) /\ (i \in Normal A)).
@@ -3919,10 +3918,10 @@ apply (@add_max_bound (#|Xi_S_r (X_M_t_e_i eps_0 A_M t_eps mal init A w) (F + 1)
               #|in_neighbor i :\: X_m_t_e_i eps_0 A_m t_eps mal init A w|)%N).
     { by apply /andP. } destruct H8 as [H8 H9].
     split.
-    * (*rewrite in_setU. apply /orP. by right.*) by [].
+    *  by [].
     * split.
       ++ apply H7.
-      ++ (*by right. *) by [].
+      ++  by [].
 + apply adversary_max.
   - by [].
   - apply eq_finset. unfold eqfun. move=>i.
@@ -4172,7 +4171,7 @@ Lemma exists_at_jp1_implies_at_j (t_eps j N: nat) (a A_m A_M :R) (eps eps_0: pos
   (0 < a)%Re ->
   (a < 1)%Re ->
   (eps < a ^ N / (1 - a ^ N) * eps_0)%Re ->
-  (forall i:D, (*i \in Normal ->  *)
+  (forall i:D, 
     let incl :=
          incl_neigh_minus_extremes i (x mal init A w (t_eps + j)%N)
          in
@@ -4228,8 +4227,8 @@ apply /andP. split.
         + by [].
         + by [].
         + by [].
-        + specialize (H9 i). (*specialize (H9 i H14). *) by destruct H9.
-        + specialize (H9 i). (*specialize (H9 i H14). *) by destruct H9.
+        + specialize (H9 i).  by destruct H9.
+        + specialize (H9 i).  by destruct H9.
         + by [].
         + by [].
       } apply Rle_not_gt in H15. contradiction.
@@ -4247,7 +4246,7 @@ Lemma exists_at_jp1_implies_at_j_m (t_eps j N: nat) (a A_m A_M:R) (eps eps_0: po
   (0 < a)%Re ->
   (a < 1)%Re ->
   (eps < a ^ N / (1 - a ^ N) * eps_0)%Re ->
-  (forall i:D, (*i \in Normal -> *)
+  (forall i:D, 
     let incl :=
          incl_neigh_minus_extremes i (x mal init A w (t_eps + j)%N)
          in
@@ -4303,8 +4302,8 @@ apply /andP. split.
         + by [].
         + by [].
         + by [].
-        + specialize (H9 i). (*specialize (H9 i H14).*) by destruct H9.
-        + specialize (H9 i). (*specialize (H9 i H14). *)by destruct H9.
+        + specialize (H9 i).  by destruct H9.
+        + specialize (H9 i).  by destruct H9.
         + by [].
         + by [].
     } apply Rge_not_lt in H15. contradiction.
@@ -4518,7 +4517,7 @@ Lemma X_M_card_le (t_eps j N: nat) (a A_M A_m:R) (eps_0 eps:posreal)
   (forall t : nat,
     (t >= t_eps)%coq_nat ->
     (m mal init A w t > A_m - eps)%Re /\ (M mal init A w t < A_M + eps)%Re) ->
-  (forall (i:D)(t:nat), (*i \in Normal -> *)
+  (forall (i:D)(t:nat), 
           let incl := incl_neigh_minus_extremes i (x mal init A w t) in
               (forall k : D,
                         k \in incl ->
@@ -4562,8 +4561,8 @@ rewrite in_setI. apply /andP. split.
         - by [].
         - by [].
         - by [].
-        - specialize (H10 k (t_eps + (j-1))%N). (*specialize (H10 k (t_eps + (j-1))%N H13). *) by destruct H10.
-        - specialize (H10 k (t_eps + (j-1))%N). (*specialize (H10 k (t_eps + (j-1))%N H13).  *)by destruct H10.
+        - specialize (H10 k (t_eps + (j-1))%N).  by destruct H10.
+        - specialize (H10 k (t_eps + (j-1))%N).  by destruct H10.
         - by [].
         - by rewrite subn1.
       } apply Rle_not_gt in H14.
@@ -4584,7 +4583,7 @@ Lemma X_m_card_le (t_eps j N: nat) (a A_M A_m:R) (eps_0 eps:posreal)
   (forall t : nat,
     (t >= t_eps)%coq_nat ->
     (m mal init A w t > A_m - eps)%Re /\ (M mal init A w t < A_M + eps)%Re) ->
-  (forall (i:D)(t:nat), (*i \in Normal -> *)
+  (forall (i:D)(t:nat), 
           let incl := incl_neigh_minus_extremes i (x mal init A w t) in
               (forall k : D,
                         k \in incl ->
@@ -4628,8 +4627,8 @@ rewrite in_setI. apply /andP. split.
         - by [].
         - by [].
         - by [].
-        - specialize (H10 k (t_eps + (j-1))%N). (*specialize (H10 k (t_eps + (j-1))%N H13). *)by destruct H10.
-        - specialize (H10 k (t_eps + (j-1))%N). (*specialize (H10 k (t_eps + (j-1))%N H13). *)by destruct H10.
+        - specialize (H10 k (t_eps + (j-1))%N). by destruct H10.
+        - specialize (H10 k (t_eps + (j-1))%N). by destruct H10.
         - by [].
         - rewrite subn1. by apply Rle_ge.
       } apply Rge_not_lt in H14.
@@ -4652,7 +4651,7 @@ Lemma X_M_X_m_lt_bound (t_eps N: nat) (a A_M A_m:R) (eps_0 eps:posreal)
   (forall t : nat,
     (t >= t_eps)%coq_nat ->
     (m mal init A w t > A_m - eps)%Re /\ (M mal init A w t < A_M + eps)%Re) ->
-  (forall (i:D)(t:nat), (*i \in Normal -> *)
+  (forall (i:D)(t:nat), 
           let incl := incl_neigh_minus_extremes i (x mal init A w t) in
               (forall k : D,
                         k \in incl ->
@@ -4707,8 +4706,8 @@ destruct H10 as [i H10]. destruct H10.
              + by [].
              + by [].
              + by [].
-             + specialize (H9 i (t_eps+0)%N). (*specialize (H9 i (t_eps+0)%N H12). *) by destruct H9.
-             + specialize (H9 i (t_eps+0)%N). (*specialize (H9 i (t_eps+0)%N H12). *) by destruct H9.
+             + specialize (H9 i (t_eps+0)%N).  by destruct H9.
+             + specialize (H9 i (t_eps+0)%N).  by destruct H9.
              + by [].
              + rewrite addn0 //=.
              + rewrite addn0 //=.
@@ -4735,7 +4734,7 @@ destruct H10 as [i H10]. destruct H10.
                                   (a * eps_j 0 eps_0 eps a - (1 - a) * eps))%Re).
                 { apply x_val_decreases_1 with A_m N.
                   + by [].
-                  + by []. (*rewrite /wts_well_behaved. exists a. by split. *)
+                  + by []. 
                   + by [].
                   + by [].
                   + by [].
@@ -4744,8 +4743,8 @@ destruct H10 as [i H10]. destruct H10.
                   + by [].
                   + by [].
                   + by [].
-                  + specialize (H9 p (t_eps+0)%N). (*specialize (H9 p (t_eps+0)%N H16). *) by destruct H9. 
-                  + specialize (H9 p (t_eps+0)%N). (*specialize (H9 p (t_eps+0)%N H16). *) by destruct H9. 
+                  + specialize (H9 p (t_eps+0)%N).  by destruct H9. 
+                  + specialize (H9 p (t_eps+0)%N).  by destruct H9. 
                   + by [].
                   + rewrite addn0 //=. 
                  } apply Rle_not_gt in H17.
@@ -4789,8 +4788,8 @@ destruct H10 as [i H10]. destruct H10.
              + by [].
              + by [].
              + by [].
-             + specialize (H9 i (t_eps+0)%N). (*specialize (H9 i (t_eps+0)%N H12). *)by destruct H9.
-             + specialize (H9 i (t_eps+0)%N). (*specialize (H9 i (t_eps+0)%N H12). *)by destruct H9.
+             + specialize (H9 i (t_eps+0)%N). by destruct H9.
+             + specialize (H9 i (t_eps+0)%N). by destruct H9.
              + by [].
              + rewrite addn0 //=.
              + rewrite addn0 //=.
@@ -4817,7 +4816,7 @@ destruct H10 as [i H10]. destruct H10.
                                   (a * eps_j 0 eps_0 eps a - (1 - a) * eps))%Re).
                 { apply x_val_increases_1 with A_M N.
                   + by [].
-                  + by []. (*rewrite /wts_well_behaved. exists a. by split. *)
+                  + by []. 
                   + by [].
                   + by [].
                   + by [].
@@ -4826,8 +4825,8 @@ destruct H10 as [i H10]. destruct H10.
                   + by [].
                   + by [].
                   + by [].
-                  + specialize (H9 p (t_eps+0)%N). (*specialize (H9 p (t_eps+0)%N H16). *) by destruct H9. 
-                  + specialize (H9 p (t_eps+0)%N). (*specialize (H9 p (t_eps+0)%N H16). *) by destruct H9. 
+                  + specialize (H9 p (t_eps+0)%N).  by destruct H9. 
+                  + specialize (H9 p (t_eps+0)%N).  by destruct H9. 
                   + by [].
                   + rewrite addn0 //=. by apply Rle_ge. 
                  } apply Rge_not_lt in H17.
@@ -4860,7 +4859,7 @@ Lemma X_M_X_m_sum_at_0_le_N (t_eps N: nat) (a A_M A_m:R) (eps_0 eps:posreal)
     (t >= t_eps)%coq_nat ->
     (m mal init A w t > A_m - eps)%Re /\ (M mal init A w t < A_M + eps)%Re) ->
   (A_M - eps_0 > A_m + eps_0)%Re ->
-  (forall (i:D)(t:nat), (*i \in Normal -> *) 
+  (forall (i:D)(t:nat),  
           let incl := incl_neigh_minus_extremes i (x mal init A w t) in
               (forall k : D,
                         k \in incl ->
@@ -4909,7 +4908,7 @@ Lemma normal_bound_exists
    (0<a)%Re -> (a < 1)%Re ->
     let N:= #|Normal A| in 
    (eps < a ^ N / (1 - a ^ N) * eps_0)%Re ->
-   (forall (i:D)(t:nat), (*i \in Normal -> *) 
+   (forall (i:D)(t:nat),  
           let incl := incl_neigh_minus_extremes i (x mal init A w t) in
               (forall k : D,
                         k \in incl ->
@@ -5393,10 +5392,10 @@ apply (@add_max_bound (#|Xi_S_r (X_M_t_e_i (eps_j j eps_0 eps a) A_M (t_eps+j)%N
                 #|in_neighbor i :\: X_M_t_e_i (eps_j j eps_0 eps a) A_M (t_eps+j)%N mal init A w|)%N).
     { by apply /andP. } destruct H13 as [H13 H14].
     split.
-    * by []. (*rewrite in_setU. apply /orP. left. apply H8. *)
+    * by []. 
     * split.
       ++ apply H12.
-      ++ (*left. *) apply H14.
+      ++  apply H14.
   - right. rewrite inE in H10.
     assert ((i \in Xi_S_r (X_m_t_e_i (eps_j j eps_0 eps a) A_m (t_eps+j)%N mal init A w)
               (F + 1)) /\ (i \in Normal A)).
@@ -5407,10 +5406,10 @@ apply (@add_max_bound (#|Xi_S_r (X_M_t_e_i (eps_j j eps_0 eps a) A_M (t_eps+j)%N
               #|in_neighbor i :\: X_m_t_e_i (eps_j j eps_0 eps a) A_m (t_eps+j)%N mal init A w|)%N).
     { by apply /andP. } destruct H13 as [H13 H14].
     split.
-    * (*rewrite in_setU. apply /orP. by right.*) by [].
+    *  by [].
     * split.
       ++ apply H12.
-      ++ (*by right. *) by [].
+      ++  by [].
 + apply adversary_max.
   - by [].
   - apply eq_finset. unfold eqfun. move=>i.
@@ -5621,7 +5620,7 @@ Lemma r_s_robustness_implies (t_eps: nat) (a A_M A_m:R) (eps_0 eps:posreal)
    (0<a)%Re -> (a < 1)%Re ->
     let N:= #|Normal A| in 
    (eps < a ^ N / (1 - a ^ N) * eps_0)%Re ->
-   (forall (i:D)(t:nat), (*i \in Normal -> *)
+   (forall (i:D)(t:nat), 
           let incl := incl_neigh_minus_extremes i (x mal init A w t) in
               (forall k : D,
                         k \in incl ->
@@ -5723,8 +5722,8 @@ induction j.
                + by [].
                + by [].
                + by [].
-               + specialize (H11 i (t_eps+0)%N). (*specialize (H11 i (t_eps+0)%N H26). *) by destruct H11. 
-               + specialize (H11 i (t_eps+0)%N). (*specialize (H11 i (t_eps+0)%N H26). *) by destruct H11. 
+               + specialize (H11 i (t_eps+0)%N).  by destruct H11. 
+               + specialize (H11 i (t_eps+0)%N).  by destruct H11. 
                + by [].
                + by rewrite addn0. 
                + by rewrite addn0 //=.
@@ -5752,7 +5751,7 @@ induction j.
                                   (a * eps_j 0 eps_0 eps a - (1 - a) * eps))%Re).
                 { apply x_val_decreases_1 with A_m N.
                   + by [].
-                  + by []. (*rewrite /wts_well_behaved. exists a. by split. *)
+                  + by []. 
                   + by [].
                   + by [].
                   + rewrite /N. rewrite cardE. destruct H. by apply size_normal_gt_0.
@@ -5761,8 +5760,8 @@ induction j.
                   + by [].
                   + by [].
                   + by [].
-                  + specialize (H11 p (t_eps+0)%N). (*specialize (H11 p (t_eps+0)%N H28). *)by destruct H11. 
-                  + specialize (H11 p (t_eps+0)%N). (*specialize (H11 p (t_eps+0)%N H28). *)by destruct H11. 
+                  + specialize (H11 p (t_eps+0)%N). by destruct H11. 
+                  + specialize (H11 p (t_eps+0)%N). by destruct H11. 
                   + by [].
                   + by rewrite addn0 //=.
                  } apply Rle_not_gt in H30.
@@ -5792,8 +5791,8 @@ induction j.
                + by [].
                + by [].
                + by [].
-               + specialize (H11 i (t_eps+0)%N). (*specialize (H11 i (t_eps+0)%N H26). *)by destruct H11. 
-               + specialize (H11 i (t_eps+0)%N). (*specialize (H11 i (t_eps+0)%N H26). *)by destruct H11. 
+               + specialize (H11 i (t_eps+0)%N). by destruct H11. 
+               + specialize (H11 i (t_eps+0)%N). by destruct H11. 
                + by [].
                + by rewrite addn0. 
                + by rewrite addn0 //=.
@@ -5821,7 +5820,7 @@ induction j.
                                   (a * eps_j 0 eps_0 eps a - (1 - a) * eps))%Re).
                 { apply x_val_increases_1 with A_M N.
                   + by [].
-                  + by []. (*rewrite /wts_well_behaved. exists a. by split. *)
+                  + by []. 
                   + by [].
                   + by [].
                   + rewrite /N. rewrite cardE. destruct H. by apply size_normal_gt_0.
@@ -5830,8 +5829,8 @@ induction j.
                   + by [].
                   + by [].
                   + by [].
-                  + specialize (H11 p (t_eps+0)%N). (*specialize (H11 p (t_eps+0)%N H28). *) by destruct H11. 
-                  + specialize (H11 p (t_eps+0)%N). (*specialize (H11 p (t_eps+0)%N H28). *) by destruct H11. 
+                  + specialize (H11 p (t_eps+0)%N).  by destruct H11. 
+                  + specialize (H11 p (t_eps+0)%N).  by destruct H11. 
                   + by [].
                   + rewrite addn0 //=. by apply Rle_ge.
                  } apply Rge_not_lt in H30.
@@ -6046,8 +6045,8 @@ induction j.
                  + by [].
                  + by [].
                  + by [].
-                 + specialize (H11 k (t_eps+j)%N). (*specialize (H11 k (t_eps+j)%N H32). *) by destruct H11. 
-                 + specialize (H11 k (t_eps+j)%N). (*specialize (H11 k (t_eps+j)%N H32). *) by destruct H11. 
+                 + specialize (H11 k (t_eps+j)%N).  by destruct H11. 
+                 + specialize (H11 k (t_eps+j)%N).  by destruct H11. 
                  + by [].
                  + by [].
                  + by [].
@@ -6082,8 +6081,8 @@ induction j.
                   + by [].
                   + by [].
                   + by [].
-                  + specialize (H11 p (t_eps+j)%N). (*specialize (H11 p (t_eps+j)%N H38).*) by destruct H11. 
-                  + specialize (H11 p (t_eps+j)%N). (*specialize (H11 p (t_eps+j)%N H38). *)by destruct H11. 
+                  + specialize (H11 p (t_eps+j)%N).  by destruct H11. 
+                  + specialize (H11 p (t_eps+j)%N).  by destruct H11. 
                   + by [].
                   + by [].
                  } apply Rle_not_gt in H39.
@@ -6116,8 +6115,8 @@ induction j.
                  + by [].
                  + by [].
                  + by [].
-                 + specialize (H11 k (t_eps+j)%N). (*specialize (H11 k (t_eps+j)%N H32). *)by destruct H11. 
-                 + specialize (H11 k (t_eps+j)%N). (*specialize (H11 k (t_eps+j)%N H32). *) by destruct H11. 
+                 + specialize (H11 k (t_eps+j)%N). by destruct H11. 
+                 + specialize (H11 k (t_eps+j)%N). by destruct H11. 
                  + by [].
                  + by [].
                  + by [].
@@ -6152,8 +6151,8 @@ induction j.
                   + by [].
                   + by [].
                   + by [].
-                  + specialize (H11 p (t_eps+j)%N). (*specialize (H11 p (t_eps+j)%N H38). *)by destruct H11. 
-                  + specialize (H11 p (t_eps+j)%N). (*specialize (H11 p (t_eps+j)%N H38). *)by destruct H11. 
+                  + specialize (H11 p (t_eps+j)%N). by destruct H11. 
+                  + specialize (H11 p (t_eps+j)%N). by destruct H11. 
                   + by [].
                   + by apply Rle_ge.
                  } apply Rge_not_lt in H39.
@@ -6175,7 +6174,7 @@ Proof.
 intros.
 unfold Resilient_asymptotic_consensus.
 intros.
-(*rewrite /F_total_malicious in H3. *)
+
 split.
 + assert ((forall t:nat, (M mal init A w t.+1 <= M mal init A w t)%Re) -> 
             exists A_M: R, is_lim_seq (fun t: nat => M mal init A w t) A_M).
@@ -6285,7 +6284,6 @@ split.
    (* how do I introduce a time parameter here *)
    destruct H12 as [eps_0 H12].
    rewrite /wts_well_behaved in H1.
-   (* rewrite /wts_well_behaved_at_t in H0. *)
 
    (** Desired contradiction ? **)
    (** The contradiction comes from the fact that 
@@ -6427,7 +6425,7 @@ split.
       + by [].
       + by [].
       + rewrite -HeqN. by [].
-      + intros. specialize (H1 t i). (*specialize (H0 t i H17). *) destruct H1.
+      + intros. specialize (H1 t i). destruct H1.
          destruct H17. by split.
     } specialize (H17 H16).
     
@@ -6453,7 +6451,7 @@ split.
       + by [].
       + by [].
       + rewrite -HeqN. by [].
-      + intros. specialize (H1 t i). (*specialize (H0 t i H18) *) destruct H1.
+      + intros. specialize (H1 t i). destruct H1.
         destruct H18. by split.
       + apply r_s_robustness_cond_implies.
         - by [].
