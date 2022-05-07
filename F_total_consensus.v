@@ -79,7 +79,7 @@ intros. split.
     assert((r_s_robustness (F + 1) (F + 1) -> False) =
     ~ r_s_robustness (F + 1) (F + 1)).
     {by unfold not. }
-    rewrite H2. intro. by apply necessity_proof. (**by apply necessity_proof.**)
+    rewrite H2. intro. by apply necessity_proof. 
   - apply excluded_middle.
 + intros. by apply strong_sufficiency.
 Qed.
