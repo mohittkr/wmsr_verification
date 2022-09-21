@@ -20,8 +20,6 @@ All the developments have been done in Coq 8.12.0. To successfully compile the c
 
 To build and install do:
 ```
-git clone https://github.com/mohittkr/wmsr_verification.git
-cd wmsr_verification
 make
 make install
 ```
