@@ -1976,9 +1976,9 @@ split.
       ++ remember [seq x mal init A w 0 i | i <- enum (Normal A)] as x_incl.
          rewrite <- nth_index with (x0:=0) (x:= x mal init A w 0 v)
          (s:=x_incl). 
-         -- apply /RlebP.
+         -- apply /RlebP. 
             apply bigmaxr_ler with (x0:=0) (s:=x_incl)
-            (i0:=(index (x mal init A w 0 v) x_incl)).
+            (i:=(index (x mal init A w 0 v) x_incl)).
             rewrite Heqx_incl index_mem.
             apply map_f. by rewrite mem_enum.
          -- rewrite Heqx_incl. apply map_f. by rewrite mem_enum.
@@ -2027,7 +2027,7 @@ split.
          (s:=x_incl). 
          -- apply /RlebP. unfold M.
             apply bigmaxr_ler with (x0:=0) (s:=x_incl)
-            (i0:=(index (x mal init A w (t'.+1) v) x_incl)).
+            (i:=(index (x mal init A w (t'.+1) v) x_incl)).
             rewrite Heqx_incl index_mem. apply map_f.
             by rewrite mem_enum.
          -- rewrite Heqx_incl. apply map_f. by rewrite mem_enum.
@@ -2088,7 +2088,7 @@ split.
             }
             rewrite H13. apply /RlebP.
             apply bigmaxr_ler with (x0:=0) (s:= x_incl)
-            (i0:=(index (- (x mal init A w 0 v)) x_incl)).
+            (i:=(index (- (x mal init A w 0 v)) x_incl)).
             rewrite Heqx_incl index_mem. apply /mapP. by exists v.
          -- rewrite Heqpos_x_incl. apply /mapP. by exists v.
       ++ apply H11, mem_nth.
@@ -2151,7 +2151,7 @@ split.
             }
             rewrite H13 -Heqx_incl. apply /RlebP.
             apply bigmaxr_ler with (x0:=0) (s:= x_incl)
-            (i0:=(index (- (x mal init A w t'.+1 v)) x_incl)).
+            (i:=(index (- (x mal init A w t'.+1 v)) x_incl)).
             rewrite Heqx_incl index_mem. apply /mapP. by exists v.
          -- rewrite Heqpos_x_incl. apply /mapP. by exists v.
       ++ apply H11, mem_nth.
