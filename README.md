@@ -9,11 +9,11 @@ We formally prove the following in Coq:
 
 # Dependencies:
 
-All the developments have been done in Coq 8.12.0. To successfully compile the code, following dependencies are required:
-- `mathcomp 1.12.0 or later` 
-- `mathcomp-analysis 0.3.7`
-- `coquelicot 3.2.0`
-- `coq-graph-theory 0.8`
+All the developments have been done in Coq 8.17.1. To successfully compile the code, following dependencies are required:
+- `mathcomp 1.17.0` 
+- `mathcomp-analysis 0.6.4`
+- `coquelicot 3.4.0`
+- `coq-graph-theory 0.9.2`
 
 
 # Building and installing instructions
