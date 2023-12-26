@@ -1,5 +1,5 @@
 # wmsr_verification
-verification of the W-MSR algorithm for distributed controls
+Verification of the W-MSR algorithm for distributed controls
 
 We formally prove the following in Coq:
 - Necessary condition for the asymptotic consensus using thw W--MSR algorithm. This development can be found in the file `necessity.v`
@@ -24,3 +24,7 @@ make
 make install
 ```
 All the files are installed in the `user-contrib/wmsr_verification` folder 
+
+Link to the git repository: https://github.com/mohittkr/wmsr_verification.git. You can clone this repository and follow the build instructions listed above. 
+
+
